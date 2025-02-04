@@ -18,10 +18,14 @@ const generateRandomColor = () => {
 const ColorGame: React.FC = () => {
   const [targetColor, setTargetColor] = useState<string>("")
   const [options, setOptions] = useState<string[]>([])
+  const [power, setPower] = useState<string[]>(["⚡", "⚡", "⚡", "⚡", "⚡"])
   const [score, setScore] = useState<number>(0)
 
   useEffect(() => {
     play()
+    // setPower(["⚡", "⚡", "⚡", "⚡", "⚡"])
+    // let i = "⚡"
+    // console.log(typeof i)
   }, [])
 
   const play = () => {
@@ -37,8 +41,6 @@ const ColorGame: React.FC = () => {
 
     setTargetColor(correctColor)
     setOptions(shuffleArray(colorOptions))
-
-    console.log("new game")
   }
 
   const shuffleArray = (array: string[]) => {
@@ -49,6 +51,9 @@ const ColorGame: React.FC = () => {
     if (selectedColor === targetColor) {
       setScore(score + 1)
       play()
+    } else {
+      // power.pop()
+      setPower(power.pop())
     }
   }
 
@@ -69,11 +74,21 @@ const ColorGame: React.FC = () => {
         ))}
       </div>
       <p className='score'>Score: {score}</p>
-      <p className='power'>Power: ⚡⚡⚡⚡⚡</p>
+      <p className='power'>Power: {power} </p>
       <button className='newGame' onClick={newGame}>
         New Game
       </button>
     </div>
+  )
+}
+
+const Modal = () => {
+  return (
+    <>
+      <div className='modal'>
+        <h1>You win !!!</h1>
+      </div>
+    </>
   )
 }
 
