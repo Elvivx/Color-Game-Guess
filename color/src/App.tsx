@@ -21,10 +21,10 @@ const ColorGame: React.FC = () => {
   const [score, setScore] = useState<number>(0)
 
   useEffect(() => {
-    newGame()
+    play()
   }, [])
 
-  const newGame = () => {
+  const play = () => {
     const correctColor = generateRandomColor()
     const colorOptions = [correctColor]
 
@@ -37,6 +37,8 @@ const ColorGame: React.FC = () => {
 
     setTargetColor(correctColor)
     setOptions(shuffleArray(colorOptions))
+
+    console.log("new game")
   }
 
   const shuffleArray = (array: string[]) => {
@@ -46,8 +48,12 @@ const ColorGame: React.FC = () => {
   const handleGuess = (selectedColor: string) => {
     if (selectedColor === targetColor) {
       setScore(score + 1)
-      newGame()
+      play()
     }
+  }
+
+  const newGame = () => {
+    setScore(0)
   }
 
   return (
@@ -57,12 +63,13 @@ const ColorGame: React.FC = () => {
       <p>Guess the color:</p>
       <div className='options'>
         {options.map((color) => (
-          <button key={color} className='option' onClick={() => handleGuess(color)}>
+          <button key={color} className='option' onClick={() => handleGuess(color)} style={{ background: color }}>
             {color}
           </button>
         ))}
       </div>
       <p className='score'>Score: {score}</p>
+      <p className='power'>Power: ⚡⚡⚡⚡⚡</p>
       <button className='newGame' onClick={newGame}>
         New Game
       </button>
