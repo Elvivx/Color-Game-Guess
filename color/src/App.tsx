@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react"
-import "./App.css"
 import "./color.scss"
 
 function App() {
@@ -26,6 +25,7 @@ const ColorGame: React.FC = () => {
   }, [])
 
   const play = () => {
+    if (power.length === 0) return
     const correctColor = generateRandomColor()
     const colorOptions = [correctColor]
 
@@ -45,6 +45,8 @@ const ColorGame: React.FC = () => {
   }
 
   const handleGuess = (selectedColor: string) => {
+    if (power.length === 0) return
+
     if (selectedColor === targetColor) {
       setScore(score + 1)
       play()
@@ -84,19 +86,22 @@ const ColorGame: React.FC = () => {
   )
 }
 
-const Modal = ({ newGame, message }) => {
+const Modal: React.FC<ModalProps> = ({ newGame, message }) => {
   return (
-    <>
-      <div className='modal'>
-        <div className='modal__content'>
-          <h1>{message}</h1>
-          <button className='newGame' onClick={newGame}>
-            Play Again
-          </button>
-        </div>
+    <div className='modal'>
+      <div className='modal__content'>
+        <h1>{message}</h1>
+        <button className='newGame' onClick={newGame}>
+          Play Again
+        </button>
       </div>
-    </>
+    </div>
   )
+}
+// Define prop types for the Modal component
+interface ModalProps {
+  newGame: () => void
+  message: string
 }
 
 export default App
