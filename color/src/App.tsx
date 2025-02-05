@@ -23,9 +23,6 @@ const ColorGame: React.FC = () => {
 
   useEffect(() => {
     play()
-    // setPower(["⚡", "⚡", "⚡", "⚡", "⚡"])
-    // let i = "⚡"
-    // console.log(typeof i)
   }, [])
 
   const play = () => {
@@ -52,41 +49,51 @@ const ColorGame: React.FC = () => {
       setScore(score + 1)
       play()
     } else {
-      // power.pop()
-      setPower(power.pop())
+      setPower((prevPower) => prevPower.slice(0, -1))
+      play()
     }
   }
 
   const newGame = () => {
     setScore(0)
+    setPower(["⚡", "⚡", "⚡", "⚡", "⚡"])
   }
 
   return (
-    <div className='container'>
-      <h1>Color Guessing Game</h1>
-      <div className='colorBox' style={{ backgroundColor: targetColor }}></div>
-      <p>Guess the color:</p>
-      <div className='options'>
-        {options.map((color) => (
-          <button key={color} className='option' onClick={() => handleGuess(color)} style={{ background: color }}>
-            {color}
-          </button>
-        ))}
+    <main>
+      <div className='container'>
+        <h1>Color Guessing Game</h1>
+        <div className='colorBox' style={{ backgroundColor: targetColor }}></div>
+        <p>Guess the color:</p>
+        <div className='options'>
+          {options.map((color) => (
+            <button key={color} className='option' onClick={() => handleGuess(color)} style={{ background: color }}>
+              {color}
+            </button>
+          ))}
+        </div>
+        <p className='score'>Score: {score}</p>
+        <p className='power'>Power: {power} </p>
+        <button className='newGame' onClick={newGame}>
+          New Game
+        </button>
       </div>
-      <p className='score'>Score: {score}</p>
-      <p className='power'>Power: {power} </p>
-      <button className='newGame' onClick={newGame}>
-        New Game
-      </button>
-    </div>
+      {!power.length && <Modal newGame={newGame} message="You've Lost 🥲😢😭" />}
+      {score > 9 && <Modal newGame={newGame} message='You Win🎉🍾😏' />}
+    </main>
   )
 }
 
-const Modal = () => {
+const Modal = ({ newGame, message }) => {
   return (
     <>
       <div className='modal'>
-        <h1>You win !!!</h1>
+        <div className='modal__content'>
+          <h1>{message}</h1>
+          <button className='newGame' onClick={newGame}>
+            Play Again
+          </button>
+        </div>
       </div>
     </>
   )
